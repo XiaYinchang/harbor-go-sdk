@@ -1,4 +1,6 @@
-# go-harbor :key:
+# go-harbor
+
+Just for token based authentication.
 
 Go library for Harbor v1.7.0 API
 
@@ -14,22 +16,19 @@ import "github.com/XiaYinchang/harbor-go-sdk/harbor"
 
 // create new client
 authInfo := harbor.HarborAuth {
-    AuthURL:     "http://192.168.56.101:5000",
-	APIVersion:  "v3",
-	DomainName:  "Default",
-	ProjectName: "admin",
-	UserName:    "admin",
-	Password:    "test",
+    APIURL:     "http://192.168.56.101/api",
+	Token:  "GAAAJYFLFJKLSKHFSKLJFSLFJ",
 }
 
-client, err := harbor.NewClient(authInfo)
+client, err := harbor.NewClientWithToken(authInfo)
 if err != nil {
     log.Fatal(err)
 }
 
-// get token
-token := client.AuthInfo.Token
+// get project by name
+projectm, err := client.GetProjectByNmae("admin")
+if err != nil {
+    log.Fatal(err)
+}
 
-// get projects of user with userid
-userProjects := client.UserProjects(client.AuthInfo.UserId)
 ```

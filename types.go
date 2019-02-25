@@ -2,6 +2,7 @@ package harbor
 
 import (
 	"net/http"
+	"net/url"
 )
 
 const X_SUBJECT_TOKEN_HEADER = "X-Subject-Token"
@@ -19,31 +20,9 @@ type HarborAuth struct {
 	Token       string
 }
 
-type Domain struct {
-	Name string `json:"name"`
-}
-
-type IdentityUser struct {
-	User User `json:"user"`
-}
-
 type User struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
-	Domain   Domain `json:"domain"`
-}
-
-type Identity struct {
-	Methods  []string     `json:"methods"`
-	Password IdentityUser `json:"password"`
-}
-
-type Auth struct {
-	Identity Identity `json:"identity"`
-}
-
-type SingleAuth struct {
-	Auth Auth `json:"auth"`
 }
 
 type ResTokenBody struct {
@@ -63,6 +42,7 @@ type KeyRequest struct {
 	URL          string
 	Method       string
 	Headers      map[string]string
+	Parameters   url.Values
 	Body         []byte
 	OkStatusCode int
 }
@@ -73,19 +53,50 @@ type KeyResponse struct {
 	Headers    http.Header
 }
 
-type ResProjectBody struct {
-	Projects []ResProject `json:"projects"`
-	Links    ResLinks     `json:links`
-}
-
 type ResProject struct {
-	Description string   `json:"description"`
-	DomainId    string   `json:"domain_id"`
-	Enabled     bool     `json:"enabled"`
-	Id          string   `json:"id"`
-	Links       ResLinks `json:"links"`
-	Name        string   `json:"name"`
-	ParentId    string   `json:"parent_id"`
+	ProjectId         string          `json:"project_id"`
+	OwnerId           string          `json:"owner_id"`
+	Name              string          `json:"name"`
+	CreateTime        string          `json:"creation_time"`
+	UpdateTime        string          `json:"update_time"`
+	Deleted           bool            `json:"deleted"`
+	OwnerName         string          `json:"owner_name"`
+	Togglable         bool            `json:"togglabe"`
+	CurrentUserRoleId int             `json:"current_user_role_id"`
+	RepoCount         int             `json:"repo_count"`
+	ChartCount        int             `json:"chart_count"`
+	Metadata          ProjectMetadata `json:"metadata"`
 }
 
-type ResLinks []map[string]string
+type ProjectMetadata struct {
+	Public             string `json:"public"`
+	EnableContentTrust string `json:"enable_content_trust"`
+	PreventVul         string `json:"prevent_vul"`
+	Severity           string `json:"severity"`
+	AutoScan           string `json:"auto_scan"`
+}
+
+type Repository struct {
+	Id          int     `json:"id"`
+	Name        string  `json:"name"`
+	ProjectId   int     `json:"project_id"`
+	Description string  `json:"description"`
+	PullCount   int     `json:"pull_count"`
+	StarCount   int     `json:"star_count"`
+	TagsCount   int     `json:"tags_count"`
+	Labels      []Label `json:"labels"`
+	CreateTime  string  `json:"creation_time"`
+	UpdateTime  string  `json:"update_time"`
+}
+
+type Label struct {
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Color       string `json:"color"`
+	Scope       string `json:"scope"`
+	ProjectId   int    `json:"project_id"`
+	CreateTime  string `json:"creation_time"`
+	UpdateTime  string `json:"update_time"`
+	Deleted     bool   `json:"deleted"`
+}
