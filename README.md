@@ -20,7 +20,7 @@ authInfo := harbor.HarborAuth {
 	Token:  "GAAAJYFLFJKLSKHFSKLJFSLFJ",
 }
 
-client, err := harbor.NewClientWithToken(authInfo)
+client, err := harbor.NewClientWithToken(&authInfo)
 if err != nil {
     log.Fatal(err)
 }

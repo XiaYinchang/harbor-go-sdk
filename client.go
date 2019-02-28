@@ -12,11 +12,11 @@ type Client struct {
 	AuthInfo *HarborAuth
 }
 
-func NewClientWithToken(authInfo HarborAuth) (*Client, error) {
+func NewClientWithToken(authInfo *HarborAuth) (*Client, error) {
 	if authInfo.Token == "" {
 		return nil, fmt.Errorf("missing token")
 	}
-	client := Client{AuthInfo: &authInfo}
+	client := Client{AuthInfo: authInfo}
 	systemInfo, err := client.GetRegistry()
 	if err != nil {
 		return nil, fmt.Errorf("Get registry url error")
