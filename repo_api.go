@@ -6,7 +6,7 @@ import (
 	"net/url"
 )
 
-func (c *Client) GetRepositoriesByProjctNmae(name string) ([]Repository, error) {
+func (c *Client) GetRepositoriesByProjectName(name string) ([]Repository, error) {
 	projectInfo, err := c.GetProjectByNmae(name)
 	if err != nil {
 		return nil, err
@@ -16,7 +16,7 @@ func (c *Client) GetRepositoriesByProjctNmae(name string) ([]Repository, error) 
 		Method: http.MethodGet,
 		Parameters: url.Values{
 			"project_id": []string{
-				string(projectInfo.ProjectId),
+				projectInfo.ProjectId,
 			},
 		},
 		OkStatusCode: http.StatusOK,
@@ -31,4 +31,27 @@ func (c *Client) GetRepositoriesByProjctNmae(name string) ([]Repository, error) 
 		return nil, err
 	}
 	return resRepositories, nil
+}
+
+func (c *Client) GetTagsByRepositoryName(nameWithProjectName string) ([]Tag, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:    "/repositories/" + nameWithProjectName + "/tags",
+		Method: http.MethodGet,
+		Parameters: url.Values{
+			"detail": []string{
+				"1",
+			},
+		},
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resTags []Tag
+	err = json.Unmarshal(resp.Body, &resTags)
+
+	if err != nil {
+		return nil, err
+	}
+	return resTags, nil
 }

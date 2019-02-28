@@ -100,3 +100,13 @@ type Label struct {
 	UpdateTime  string `json:"update_time"`
 	Deleted     bool   `json:"deleted"`
 }
+
+type Tag struct {
+	Name         string `json:"name"`
+	CreateTime   string `json:"created"`
+	Architecture string `json:"architecture"`
+	Author       string `json:"author"`
+	Os           string `json:"os"`
+	Size         int    `json:"size"`
+	Digest       string `json:"digest"`
+}
