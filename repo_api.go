@@ -55,3 +55,15 @@ func (c *Client) GetTagsByRepositoryName(nameWithProjectName string) ([]Tag, err
 	}
 	return resTags, nil
 }
+
+func (c *Client) DeleteTag(repoNameWithProjectName string, tagName string) error {
+	_, err := c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + repoNameWithProjectName + "/tags/" + tagName,
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
