@@ -2,6 +2,7 @@ package harbor
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -16,12 +17,17 @@ func NewClientWithToken(authInfo HarborAuth) (*Client, error) {
 		return nil, fmt.Errorf("missing token")
 	}
 	client := Client{AuthInfo: &authInfo}
+	systemInfo, err := client.GetRegistry()
+	if err != nil {
+		return nil, fmt.Errorf("Get registry url error")
+	}
+	client.AuthInfo.RegistryUrl = systemInfo.RegistryUrl
 	return &client, nil
 }
 
 func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 	client := &http.Client{}
-	reqUrl := c.AuthInfo.AuthURL+r.URL + "?" + r.Parameters.Encode()
+	reqUrl := c.AuthInfo.AuthURL + r.URL + "?" + r.Parameters.Encode()
 	req, err := http.NewRequest(r.Method, reqUrl, bytes.NewBuffer(r.Body))
 	if err != nil {
 		return KeyResponse{}, err
@@ -80,4 +86,22 @@ func (c *Client) doRequest(r KeyRequest) (KeyResponse, error) {
 		Body:       body,
 		StatusCode: resp.StatusCode,
 		Headers:    resp.Header}, nil
+}
+
+func (c *Client) GetRegistry() (*SystemInfo, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:          "/systeminfo",
+		Method:       http.MethodGet,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var systemInfo SystemInfo
+	err = json.Unmarshal(resp.Body, &systemInfo)
+
+	if err != nil {
+		return nil, err
+	}
+	return &systemInfo, nil
 }

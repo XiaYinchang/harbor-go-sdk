@@ -11,6 +11,7 @@ const X_AUTH_TOKEN = "X-Auth-Token"
 type HarborAuth struct {
 	AuthURL     string
 	APIURL      string
+	RegistryUrl string
 	APIVersion  string
 	DomainName  string
 	ProjectName string
@@ -18,6 +19,10 @@ type HarborAuth struct {
 	UserId      string
 	Password    string
 	Token       string
+}
+
+type SystemInfo struct {
+	RegistryUrl string `json:"registry_url"`
 }
 
 type User struct {
