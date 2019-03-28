@@ -32,3 +32,29 @@ func (c *Client) GetProjectByNmae(name string) (*ResProject, error) {
 	}
 	return &(resProjects[0]), nil
 }
+
+func (c *Client) CheckProjectExist(name string) (bool, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:    "/projects",
+		Method: http.MethodGet,
+		Parameters: url.Values{
+			"name": []string{
+				name,
+			},
+		},
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return true, err
+	}
+	var resProjects []ResProject
+	err = json.Unmarshal(resp.Body, &resProjects)
+
+	if err != nil {
+		return true, err
+	}
+	if len(resProjects) <= 0 {
+		return false, nil
+	}
+	return true, nil
+}
