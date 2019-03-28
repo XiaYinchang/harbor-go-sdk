@@ -74,7 +74,7 @@ type ResProject struct {
 }
 
 type ProjectMetadata struct {
-	Public             string `json:"public"`
+	Public             bool   `json:"public"`
 	EnableContentTrust string `json:"enable_content_trust"`
 	PreventVul         string `json:"prevent_vul"`
 	Severity           string `json:"severity"`

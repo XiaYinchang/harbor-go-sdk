@@ -63,7 +63,7 @@ func (c *Client) CreateProject(name string) error {
 	body, err := json.Marshal(CreateProjectBody{
 		ProjectName: name,
 		Metadata: ProjectMetadata{
-			Public: "false",
+			Public: false,
 		},
 	})
 	if err != nil {
