@@ -59,26 +59,18 @@ type KeyResponse struct {
 }
 
 type ResProject struct {
-	ProjectId         string          `json:"project_id"`
-	OwnerId           string          `json:"owner_id"`
-	Name              string          `json:"name"`
-	CreateTime        string          `json:"creation_time"`
-	UpdateTime        string          `json:"update_time"`
-	Deleted           bool            `json:"deleted"`
-	OwnerName         string          `json:"owner_name"`
-	Togglable         bool            `json:"togglabe"`
-	CurrentUserRoleId int             `json:"current_user_role_id"`
-	RepoCount         int             `json:"repo_count"`
-	ChartCount        int             `json:"chart_count"`
-	Metadata          ProjectMetadata `json:"metadata"`
-}
-
-type ProjectMetadata struct {
-	Public             bool   `json:"public"`
-	EnableContentTrust string `json:"enable_content_trust"`
-	PreventVul         string `json:"prevent_vul"`
-	Severity           string `json:"severity"`
-	AutoScan           string `json:"auto_scan"`
+	ProjectId         string            `json:"project_id"`
+	OwnerId           string            `json:"owner_id"`
+	Name              string            `json:"name"`
+	CreateTime        string            `json:"creation_time"`
+	UpdateTime        string            `json:"update_time"`
+	Deleted           bool              `json:"deleted"`
+	OwnerName         string            `json:"owner_name"`
+	Togglable         bool              `json:"togglabe"`
+	CurrentUserRoleId int               `json:"current_user_role_id"`
+	RepoCount         int               `json:"repo_count"`
+	ChartCount        int               `json:"chart_count"`
+	Metadata          map[string]string `json:"metadata"`
 }
 
 type Repository struct {
@@ -117,6 +109,6 @@ type Tag struct {
 }
 
 type CreateProjectBody struct {
-	ProjectName string          `json:"project_name"`
-	Metadata    ProjectMetadata `json:"metadata"`
+	ProjectName string            `json:"project_name"`
+	Metadata    map[string]string `json:"metadata"`
 }

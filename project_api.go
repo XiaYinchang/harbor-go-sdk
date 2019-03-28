@@ -62,8 +62,8 @@ func (c *Client) CheckProjectExist(name string) (bool, error) {
 func (c *Client) CreateProject(name string) error {
 	body, err := json.Marshal(CreateProjectBody{
 		ProjectName: name,
-		Metadata: ProjectMetadata{
-			Public: false,
+		Metadata: map[string]string{
+			"public": "false",
 		},
 	})
 	if err != nil {
