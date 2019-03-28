@@ -58,3 +58,25 @@ func (c *Client) CheckProjectExist(name string) (bool, error) {
 	}
 	return true, nil
 }
+
+func (c *Client) CreateProject(name string) error {
+	body, err := json.Marshal(CreateProjectBody{
+		ProjectName: name,
+		Metadata: ProjectMetadata{
+			Public: "false",
+		},
+	})
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/projects",
+		Method:       http.MethodPost,
+		Body:         body,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}

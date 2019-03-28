@@ -115,3 +115,8 @@ type Tag struct {
 	Size         int    `json:"size"`
 	Digest       string `json:"digest"`
 }
+
+type CreateProjectBody struct {
+	ProjectName string          `json:"project_name"`
+	Metadata    ProjectMetadata `json:"metadata"`
+}
