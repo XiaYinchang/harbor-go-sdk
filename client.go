@@ -27,8 +27,7 @@ func NewClientWithToken(authInfo *HarborAuth) (*Client, error) {
 
 func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 	client := &http.Client{}
-	reqUrl := c.AuthInfo.AuthURL + r.URL + "?" + r.Parameters.Encode()
-	fmt.Println(reqUrl)
+	reqUrl := c.AuthInfo.APIURL + r.URL + "?" + r.Parameters.Encode()
 	req, err := http.NewRequest(r.Method, reqUrl, bytes.NewBuffer(r.Body))
 	if err != nil {
 		return KeyResponse{}, err
