@@ -30,6 +30,16 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type UserInfo struct {
+	Username     string `json:"username"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	Realname     string `json:"realname"`
+	Rolename     string `json:"role_name"`
+	Role         int    `json:"role_id"`
+	HasAdminRole bool   `json:"has_admin_role"`
+}
+
 type ResTokenBody struct {
 	Token ResToken `json:"token"`
 }
