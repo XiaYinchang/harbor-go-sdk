@@ -73,7 +73,7 @@ func (c *Client) CreateProject(name string) error {
 		URL:          "/projects",
 		Method:       http.MethodPost,
 		Body:         body,
-		OkStatusCode: http.StatusOK,
+		OkStatusCode: http.StatusCreated,
 	})
 	if err != nil {
 		return err

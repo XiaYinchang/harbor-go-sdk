@@ -18,7 +18,7 @@ func (c *Client) CreateUser(name string) error {
 		URL:          "/users",
 		Method:       http.MethodPost,
 		Body:         body,
-		OkStatusCode: http.StatusOK,
+		OkStatusCode: http.StatusCreated,
 	})
 	if err != nil {
 		return err
