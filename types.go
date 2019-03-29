@@ -27,11 +27,7 @@ type SystemInfo struct {
 }
 
 type User struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
-}
-
-type UserInfo struct {
+	UserId       int    `json:"user_id"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	Password     string `json:"password"`
@@ -39,19 +35,6 @@ type UserInfo struct {
 	Rolename     string `json:"role_name"`
 	Role         int    `json:"role_id"`
 	HasAdminRole bool   `json:"has_admin_role"`
-}
-
-type ResTokenBody struct {
-	Token ResToken `json:"token"`
-}
-
-type ResToken struct {
-	User ResUser `json:"user"`
-}
-
-type ResUser struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
 }
 
 type KeyRequest struct {

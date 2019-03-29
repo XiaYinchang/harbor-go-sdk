@@ -96,3 +96,26 @@ func (c *Client) DeleteProject(name string) error {
 	}
 	return nil
 }
+
+func (c *Client) GetUserProjects(userName string) ([]ResProject, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:    "/projects",
+		Method: http.MethodGet,
+		Parameters: url.Values{
+			"owner": []string{
+				userName,
+			},
+		},
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resProjects []ResProject
+	err = json.Unmarshal(resp.Body, &resProjects)
+
+	if err != nil {
+		return nil, err
+	}
+	return resProjects, nil
+}
