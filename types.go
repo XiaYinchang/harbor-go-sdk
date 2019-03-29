@@ -3,6 +3,7 @@ package harbor
 import (
 	"net/http"
 	"net/url"
+	"time"
 )
 
 const X_SUBJECT_TOKEN_HEADER = "X-Subject-Token"
@@ -69,17 +70,17 @@ type KeyResponse struct {
 }
 
 type ResProject struct {
-	ProjectId         string            `json:"project_id"`
-	OwnerId           string            `json:"owner_id"`
+	ProjectId         int64             `json:"project_id"`
+	OwnerId           int               `json:"owner_id"`
 	Name              string            `json:"name"`
-	CreateTime        string            `json:"creation_time"`
-	UpdateTime        string            `json:"update_time"`
+	CreateTime        time.Time         `json:"creation_time"`
+	UpdateTime        time.Time         `json:"update_time"`
 	Deleted           bool              `json:"deleted"`
 	OwnerName         string            `json:"owner_name"`
 	Togglable         bool              `json:"togglabe"`
 	CurrentUserRoleId int               `json:"current_user_role_id"`
-	RepoCount         int               `json:"repo_count"`
-	ChartCount        int               `json:"chart_count"`
+	RepoCount         int64             `json:"repo_count"`
+	ChartCount        uint64            `json:"chart_count"`
 	Metadata          map[string]string `json:"metadata"`
 }
 

@@ -80,3 +80,19 @@ func (c *Client) CreateProject(name string) error {
 	}
 	return nil
 }
+
+func (c *Client) DeleteProject(name string) error {
+	projectInfo, err := c.GetProjectByNmae(name)
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/projects/" + fmt.Sprintf("%v", projectInfo.ProjectId),
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}

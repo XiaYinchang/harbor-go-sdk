@@ -2,6 +2,7 @@ package harbor
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -16,7 +17,7 @@ func (c *Client) GetRepositoriesByProjectName(name string) ([]Repository, error)
 		Method: http.MethodGet,
 		Parameters: url.Values{
 			"project_id": []string{
-				projectInfo.ProjectId,
+				fmt.Sprintf("%v", projectInfo.ProjectId),
 			},
 		},
 		OkStatusCode: http.StatusOK,
