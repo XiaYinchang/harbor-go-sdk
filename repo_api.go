@@ -186,3 +186,40 @@ func (c *Client) ListScopedLabels(scope, projectName string) ([]Label, error) {
 	}
 	return resLabels, nil
 }
+
+func (c *Client) DeleteLabel(labelId int32) error {
+	_, err := c.DoRequest(KeyRequest{
+		URL:          "/labels/" + fmt.Sprintf("%d", labelId),
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) CreateScopedLabel(scope, projectName, newLabelName string) error {
+	projectInfo, err := c.GetProjectByNmae(projectName)
+	if err != nil {
+		return err
+	}
+	reqBody, err := json.Marshal(Label{
+		Scope:     scope,
+		ProjectId: projectInfo.ProjectId,
+		Name:      newLabelName,
+	})
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/labels",
+		Method:       http.MethodPost,
+		Body:         reqBody,
+		OkStatusCode: http.StatusCreated,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -53,7 +53,7 @@ type KeyResponse struct {
 }
 
 type ResProject struct {
-	ProjectId         int64             `json:"project_id"`
+	ProjectId         int             `json:"project_id"`
 	OwnerId           int               `json:"owner_id"`
 	Name              string            `json:"name"`
 	CreateTime        time.Time         `json:"creation_time"`
