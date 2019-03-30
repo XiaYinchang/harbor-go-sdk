@@ -80,3 +80,21 @@ func (c *Client) DeleteRepo(repoNameWithProjectName string) error {
 	}
 	return nil
 }
+
+func (c *Client) GetLabelsByRepositoryName(repoName string) ([]Label, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + repoName + "/labels",
+		Method:       http.MethodGet,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resLabels []Label
+	err = json.Unmarshal(resp.Body, &resLabels)
+
+	if err != nil {
+		return nil, err
+	}
+	return resLabels, nil
+}
