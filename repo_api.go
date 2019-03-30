@@ -157,3 +157,32 @@ func (c *Client) AddRepoLabel(repoName string, labelId int32) error {
 	}
 	return nil
 }
+
+func (c *Client) ListScopedLabels(scope, projectName string) ([]Label, error) {
+	projectInfo, err := c.GetProjectByNmae(projectName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.DoRequest(KeyRequest{
+		URL:    "/labels",
+		Method: http.MethodGet,
+		Parameters: url.Values{
+			"scope": []string{
+				scope,
+			},
+			"project_id": []string{
+				fmt.Sprintf("%d", projectInfo.ProjectId),
+			},
+		},
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resLabels []Label
+	err = json.Unmarshal(resp.Body, &resLabels)
+	if err != nil {
+		return nil, err
+	}
+	return resLabels, nil
+}
