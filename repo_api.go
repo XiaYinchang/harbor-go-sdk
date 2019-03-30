@@ -125,3 +125,15 @@ func (c *Client) RetagRepo(targetRepoName, srcImage, targetTag string) error {
 	}
 	return nil
 }
+
+func (c *Client) DeleteRepoLabel(repoName string, labelId int32) error {
+	_, err := c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + repoName + "/labels/" + fmt.Sprintf("%d", labelId),
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
