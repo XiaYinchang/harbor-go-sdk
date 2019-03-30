@@ -137,3 +137,23 @@ func (c *Client) DeleteRepoLabel(repoName string, labelId int32) error {
 	}
 	return nil
 }
+
+func (c *Client) AddRepoLabel(repoName string, labelId int32) error {
+
+	reqBody, err := json.Marshal(Label{
+		Id: labelId,
+	})
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + repoName + "/labels",
+		Method:       http.MethodPost,
+		Body:         reqBody,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
