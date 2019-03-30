@@ -19,7 +19,7 @@ func NewClientWithToken(authInfo *HarborAuth) (*Client, error) {
 	client := Client{AuthInfo: authInfo}
 	systemInfo, err := client.GetRegistry()
 	if err != nil {
-		return nil, fmt.Errorf("Get registry url error")
+		return nil, err
 	}
 	client.AuthInfo.RegistryUrl = systemInfo.RegistryUrl
 	return &client, nil
@@ -32,7 +32,7 @@ func NewClientWithPassword(authInfo *HarborAuth) (*Client, error) {
 	client := Client{AuthInfo: authInfo}
 	systemInfo, err := client.GetRegistry()
 	if err != nil {
-		return nil, fmt.Errorf("Get registry url error")
+		return nil, err
 	}
 	client.AuthInfo.RegistryUrl = systemInfo.RegistryUrl
 	return &client, nil
