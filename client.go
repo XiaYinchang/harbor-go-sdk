@@ -25,6 +25,19 @@ func NewClientWithToken(authInfo *HarborAuth) (*Client, error) {
 	return &client, nil
 }
 
+func NewClientWithPassword(authInfo *HarborAuth) (*Client, error) {
+	if authInfo.UserName == "" || authInfo.Password == "" {
+		return nil, fmt.Errorf("missing username or password")
+	}
+	client := Client{AuthInfo: authInfo}
+	systemInfo, err := client.GetRegistry()
+	if err != nil {
+		return nil, fmt.Errorf("Get registry url error")
+	}
+	client.AuthInfo.RegistryUrl = systemInfo.RegistryUrl
+	return &client, nil
+}
+
 func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 	client := &http.Client{}
 	reqUrl := c.AuthInfo.APIURL + r.URL + "?" + r.Parameters.Encode()
@@ -33,7 +46,12 @@ func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 		return KeyResponse{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set(X_AUTH_TOKEN, c.AuthInfo.Token)
+	if c.AuthInfo.Token != "" {
+		req.Header.Set(X_AUTH_TOKEN, c.AuthInfo.Token)
+	}
+	if c.AuthInfo.UserName != "" && c.AuthInfo.Password != "" {
+		req.SetBasicAuth(c.AuthInfo.UserName, c.AuthInfo.Password)
+	}
 	for key, value := range r.Headers {
 		req.Header.Set(key, value)
 	}

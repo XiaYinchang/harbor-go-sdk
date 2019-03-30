@@ -98,3 +98,30 @@ func (c *Client) GetLabelsByRepositoryName(repoName string) ([]Label, error) {
 	}
 	return resLabels, nil
 }
+
+func (c *Client) RetagRepo(targetRepoName, srcImage, targetTag string) error {
+
+	reqBody, err := json.Marshal(
+		struct {
+			Tag      string `json:"tag"`
+			SrcImage string `json:"src_image"`
+			Override bool   `json:"override"`
+		}{
+			targetTag,
+			srcImage,
+			true,
+		})
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + targetRepoName + "/tags",
+		Method:       http.MethodPost,
+		Body:         reqBody,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
