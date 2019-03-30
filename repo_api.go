@@ -68,3 +68,15 @@ func (c *Client) DeleteTag(repoNameWithProjectName string, tagName string) error
 	}
 	return nil
 }
+
+func (c *Client) DeleteRepo(repoNameWithProjectName string) error {
+	_, err := c.DoRequest(KeyRequest{
+		URL:          "/repositories/" + repoNameWithProjectName,
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
