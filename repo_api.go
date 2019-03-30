@@ -158,20 +158,13 @@ func (c *Client) AddRepoLabel(repoName string, labelId int32) error {
 	return nil
 }
 
-func (c *Client) ListScopedLabels(scope, projectName string) ([]Label, error) {
-	projectInfo, err := c.GetProjectByNmae(projectName)
-	if err != nil {
-		return nil, err
-	}
+func (c *Client) ListGlobalScopedLabels() ([]Label, error) {
 	resp, err := c.DoRequest(KeyRequest{
 		URL:    "/labels",
 		Method: http.MethodGet,
 		Parameters: url.Values{
 			"scope": []string{
-				scope,
-			},
-			"project_id": []string{
-				fmt.Sprintf("%d", projectInfo.ProjectId),
+				"g",
 			},
 		},
 		OkStatusCode: http.StatusOK,
@@ -199,15 +192,10 @@ func (c *Client) DeleteLabel(labelId int32) error {
 	return nil
 }
 
-func (c *Client) CreateScopedLabel(scope, projectName, newLabelName string) error {
-	projectInfo, err := c.GetProjectByNmae(projectName)
-	if err != nil {
-		return err
-	}
+func (c *Client) CreateGlobalScopedLabel(newLabelName string) error {
 	reqBody, err := json.Marshal(Label{
-		Scope:     scope,
-		ProjectId: projectInfo.ProjectId,
-		Name:      newLabelName,
+		Scope: "g",
+		Name:  newLabelName,
 	})
 	if err != nil {
 		return err
