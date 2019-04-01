@@ -140,7 +140,9 @@ func (c *Client) DeleteRepoLabel(repoName string, labelId int32) error {
 
 func (c *Client) AddRepoLabel(repoName string, labelId int32) error {
 
-	reqBody, err := json.Marshal(Label{
+	reqBody, err := json.Marshal(struct {
+		Id int32 `json:"id"`
+	}{
 		Id: labelId,
 	})
 	if err != nil {
