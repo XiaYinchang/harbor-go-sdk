@@ -193,7 +193,10 @@ func (c *Client) DeleteLabel(labelId int32) error {
 }
 
 func (c *Client) CreateGlobalScopedLabel(newLabelName string) error {
-	reqBody, err := json.Marshal(Label{
+	reqBody, err := json.Marshal(struct {
+		Scope string `json:"scope"`
+		Name  string `json:"name"`
+	}{
 		Scope: "g",
 		Name:  newLabelName,
 	})
