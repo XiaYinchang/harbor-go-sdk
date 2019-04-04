@@ -53,7 +53,7 @@ type KeyResponse struct {
 }
 
 type ResProject struct {
-	ProjectId         int             `json:"project_id"`
+	ProjectId         int               `json:"project_id"`
 	OwnerId           int               `json:"owner_id"`
 	Name              string            `json:"name"`
 	CreateTime        time.Time         `json:"creation_time"`
@@ -104,5 +104,6 @@ type Tag struct {
 
 type CreateProjectBody struct {
 	ProjectName string            `json:"project_name"`
+	OwnerName   string            `json:"owner_name"`
 	Metadata    map[string]string `json:"metadata"`
 }
