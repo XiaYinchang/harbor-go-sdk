@@ -83,6 +83,16 @@ func (c *Client) CreateProject(projectName, ownerName string) error {
 }
 
 func (c *Client) DeleteProject(name string) error {
+	retRepos, err := c.GetRepositoriesByProjectName(name)
+	if err != nil {
+		return err
+	}
+	for _, v := range retRepos {
+		err = c.DeleteRepo(v.Name)
+		if err != nil {
+			return err
+		}
+	}
 	projectInfo, err := c.GetProjectByNmae(name)
 	if err != nil {
 		return err
